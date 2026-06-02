@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AMONGUSBROWSING</title>
+<style>
+body {
+  margin: 0;
+  background: #f3f4f6;
+  font-family: system-ui, sans-serif;
+}
+#dashboard, #browser {
+  display: none;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#dashboard {
+  display: flex;
+}
+.card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 360px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+</style>
+</head>
+<body>
+
+<div id="dashboard">
+  <div class="card">
+    <h2>Student Portal</h2>
+    <p style="font-size:12px;color:#666">Assignments • Grades • Resources</p>
+    <p style="font-size:11px;color:#aaa">Hold mouse for 1 second</p>
+  </div>
+</div>
+
+<div id="browser">
+  <div class="card">
+    <h2>AMONGUSBROWSER</h2>
+    <form id="go">
+      <input id="url" placeholder="Enter website or search" />
+      <button>Go</button>
+    </form>
+  </div>
+</div>
+
+<script>
+let timer;
+document.body.onmousedown = () => {
+  timer = setTimeout(() => {
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("browser").style.display = "flex";
+  }, 1000);
+};
+document.body.onmouseup = () => clearTimeout(timer);
+
+document.getElementById("go").onsubmit = (e) => {
+  e.preventDefault();
+  let q = document.getElementById("url").value.trim();
+
+  if (!q.includes(".")) {
+    q = "https://duckduckgo.com/?q=" + encodeURIComponent(q);
+  } else if (!q.startsWith("http")) {
+    q = "https://" + q;
+  }
+
+  window.location.href = "/uv?cpo=" + btoa(q);
+};
+</script>
+
+</body>
+</html>
