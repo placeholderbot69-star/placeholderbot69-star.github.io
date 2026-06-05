@@ -1,89 +1,278 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>AMONGUSBROWSING</title>
-<style>
-body {
-  margin: 0;
-  background: #f3f4f6;
-  font-family: system-ui, sans-serif;
-}
-#dashboard, #browser {
-  display: none;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-#dashboard {
-  display: flex;
-}
-.card {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  width: 360px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-button {
-  margin-top: 10px;
-  width: 100%;
-  padding: 8px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <title>AMONGUSBROWSING • Student Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+      --border: #e5e7eb;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+    header {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header .title {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    header .meta {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    main {
+      min-height: calc(100vh - 52px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 20px;
+      max-width: 1000px;
+      width: 100%;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+    }
+    .card h2 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+    .card .sub {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+    .schedule {
+      margin-top: 10px;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      font-size: 13px;
+    }
+    .schedule-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+    .schedule-row span.subject {
+      font-weight: 500;
+    }
+    .schedule-row span.room {
+      color: var(--text-sub);
+      font-size: 12px;
+    }
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+    .hint code {
+      background: #e5e7eb;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    /* Browser panel */
+    #browser-panel {
+      display: none;
+    }
+    #browser-panel.active {
+      display: block;
+    }
+    .browser-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .browser-title h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .browser-title span {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .input-row input {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      outline: none;
+    }
+    .input-row input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px #2563eb33;
+    }
+    .input-row button {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .input-row button:hover {
+      background: var(--accent-dark);
+    }
+    .browser-hint {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+    .browser-hint code {
+      background: #e5e7eb;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div id="dashboard">
-  <div class="card">
-    <h2>Student Portal</h2>
-    <p style="font-size:12px;color:#666">Assignments • Grades • Resources</p>
-    <p style="font-size:11px;color:#aaa">Hold mouse for 1 second</p>
-  </div>
-</div>
+<header>
+  <div class="title">AMONGUSBROWSING • Student Portal</div>
+  <div class="meta">Madison Unified • v1.0</div>
+</header>
 
-<div id="browser">
-  <div class="card">
-    <h2>AMONGUSBROWSER</h2>
-    <form id="go">
-      <input id="url" placeholder="Enter website or search" />
-      <button>Go</button>
-    </form>
+<main>
+  <div class="layout">
+    <!-- Left: School dashboard -->
+    <section class="card" id="dashboard-card">
+      <h2>Today’s Overview</h2>
+      <div class="sub">Assignments • Grades • Resources</div>
+
+      <div class="schedule">
+        <div class="schedule-row">
+          <span class="subject">Math – Algebra II</span>
+          <span class="room">Room 204 • 9:00 AM</span>
+        </div>
+        <div class="schedule-row">
+          <span class="subject">Science – Biology</span>
+          <span class="room">Lab 3 • 10:15 AM</span>
+        </div>
+        <div class="schedule-row">
+          <span class="subject">English – Literature</span>
+          <span class="room">Room 118 • 12:00 PM</span>
+        </div>
+        <div class="schedule-row">
+          <span class="subject">Computer Science</span>
+          <span class="room">Lab 1 • 1:30 PM</span>
+        </div>
+      </div>
+
+      <div class="hint">
+        Hold the mouse anywhere on the page for <strong>1 second</strong> to open tools.<br>
+        Search and browsing are “for research purposes only”.
+      </div>
+    </section>
+
+    <!-- Right: Hidden AMONGUSBROWSER -->
+    <section class="card" id="browser-panel">
+      <div class="browser-title">
+        <h2>AMONGUSBROWSER</h2>
+        <span>Research Tools • DuckDuckGo • Proxy</span>
+      </div>
+
+      <form id="browser-form">
+        <label for="browser-input" style="font-size:13px;margin-bottom:4px;display:block;">
+          Website or search query
+        </label>
+        <div class="input-row">
+          <input id="browser-input" type="text" placeholder="example.com or 'cell structure'" />
+          <button type="submit">Go</button>
+        </div>
+      </form>
+
+      <div class="browser-hint">
+        • If you type a word or sentence, it uses <strong>DuckDuckGo</strong>.<br>
+        • If you type a domain, it opens via your proxy using
+        <code>/uv?cpo=BASE64_URL</code> (CroxyProxy style).<br>
+        • Configure your proxy URL in the script below.
+      </div>
+    </section>
   </div>
-</div>
+</main>
 
 <script>
-let timer;
-document.body.onmousedown = () => {
-  timer = setTimeout(() => {
-    document.getElementById("dashboard").style.display = "none";
-    document.getElementById("browser").style.display = "flex";
-  }, 1000);
-};
-document.body.onmouseup = () => clearTimeout(timer);
+  // === CONFIG: set your proxy base URL here ===
+  // Example: "https://your-worker-subdomain.workers.dev"
+  const PROXY_BASE = "https://your-worker-subdomain.workers.dev";
 
-document.getElementById("go").onsubmit = (e) => {
-  e.preventDefault();
-  let q = document.getElementById("url").value.trim();
+  // Mouse hold → reveal browser
+  let holdTimer = null;
+  document.body.addEventListener("mousedown", () => {
+    holdTimer = setTimeout(() => {
+      document.getElementById("browser-panel").classList.add("active");
+    }, 1000);
+  });
+  document.body.addEventListener("mouseup", () => {
+    if (holdTimer) clearTimeout(holdTimer);
+  });
 
-  if (!q.includes(".")) {
-    q = "https://duckduckgo.com/?q=" + encodeURIComponent(q);
-  } else if (!q.startsWith("http")) {
-    q = "https://" + q;
-  }
+  // Browser form logic
+  document.getElementById("browser-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    let q = document.getElementById("browser-input").value.trim();
+    if (!q) return;
 
-  window.location.href = "/uv?cpo=" + btoa(q);
-};
+    let target;
+    // If it looks like a search (no dot), use DuckDuckGo
+    if (!q.includes(".")) {
+      target = "https://duckduckgo.com/?q=" + encodeURIComponent(q);
+    } else {
+      // Looks like a URL/domain
+      if (!q.startsWith("http://") && !q.startsWith("https://")) {
+        q = "https://" + q;
+      }
+      target = q;
+    }
+
+    // CroxyProxy-style: /uv?cpo=BASE64_URL
+    const encoded = btoa(target);
+    const finalUrl = PROXY_BASE + "/uv?cpo=" + encoded;
+    window.location.href = finalUrl;
+  });
 </script>
 
 </body>
