@@ -1,1 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Maker - Local Multiplayer</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="mainMenu">
+        <h1>⚔️ Game Maker</h1>
+        <button onclick="startEditor()">Create Game</button>
+        <button onclick="joinGame()">Join Game (Enter Code)</button>
+        <button onclick="loadPreset('tdm')">Team Deathmatch (Preset)</button>
+        <button onclick="loadPreset('bomb')">Bomb Defuse (Preset)</button>
+    </div>
 
+    <div id="editor" style="display:none;">
+        <h2>Game Editor</h2>
+        <div id="gameCanvas"></div>
+        
+        <!-- Character Creator -->
+        <div id="characterPanel">
+            <h3>Character Creator</h3>
+            <label>Name: <input type="text" id="charName"></label>
+            <label>Color: <input type="color" id="charColor"></label>
+            <label>Speed: <input type="range" min="50" max="300" id="charSpeed"></label>
+            <button onclick="createCharacter()">Add Character</button>
+        </div>
+
+        <!-- Weapon Creator -->
+        <div id="weaponPanel">
+            <h3>Weapon Creator</h3>
+            <label>Name: <input type="text" id="weaponName"></label>
+            <label>Damage: <input type="number" min="1" max="100" id="weaponDmg"></label>
+            <label>Fire Rate: <input type="number" min="100" max="1000" id="weaponRate"></label>
+            <label>Type: 
+                <select id="weaponType">
+                    <option>Gun</option>
+                    <option>Melee</option>
+                    <option>Grenade</option>
+                </select>
+            </label>
+            <button onclick="createWeapon()">Add Weapon</button>
+        </div>
+
+        <!-- Game Mode Selector -->
+        <div id="gameModePanel">
+            <h3>Game Mode</h3>
+            <select id="gameMode">
+                <option value="tdm">Team Deathmatch</option>
+                <option value="dm">Free For All</option>
+                <option value="bomb">Bomb Defuse</option>
+                <option value="custom">Custom Code</option>
+            </select>
+        </div>
+
+        <!-- Custom Code Editor -->
+        <div id="codePanel" style="display:none;">
+            <h3>Custom Game Code</h3>
+            <textarea id="customCode" placeholder="// Write custom game logic here
+onPlayerSpawn: (player) => { ... }
+onPlayerKilled: (killer, victim) => { ... }"></textarea>
+            <button onclick="testCode()">Test Code</button>
+        </div>
+
+        <div>
+            <button onclick="startGame()">Start Game</button>
+            <button onclick="exportGame()">Export Game (Download/Share)</button>
+            <button onclick="backToMenu()">Back</button>
+        </div>
+    </div>
+
+    <div id="gameContainer" style="display:none;">
+        <div id="gameInfo">
+            <span>Players: <span id="playerCount">1</span></span>
+            <span>Code to Share: <input type="text" id="shareCode" readonly></span>
+            <button onclick="copyCode()">Copy Code</button>
+        </div>
+        <div id="phaser-container"></div>
+    </div>
+
+    <div id="joinDialog" style="display:none;">
+        <h2>Join Game</h2>
+        <p>Enter the share code from your friend:</p>
+        <input type="text" id="joinCode" placeholder="e.g., ABCD-1234">
+        <button onclick="connectToPeer()">Connect</button>
+        <button onclick="closeJoinDialog()">Cancel</button>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/gameEngine.js"></script>
+    <script src="js/networking.js"></script>
+    <script src="js/weaponSystem.js"></script>
+    <script src="js/characterSystem.js"></script>
+</body>
+</html>
